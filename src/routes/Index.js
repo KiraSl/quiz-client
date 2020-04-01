@@ -7,13 +7,13 @@ class Index extends React.Component {
     super(props)
 
     this.state = {
-      selectedCategory: null
+      selectedCategory: null,
     }
   }
 
   selectCategory(event) {
     this.setState({
-      selectedCategory: event.target.value
+      selectedCategory: event.target.value,
     })
   }
 
