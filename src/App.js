@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Index from './routes/Index'
 import Game from './routes/Game'
 import EndGame from './routes/EndGame'
-import './App.css'
 
 function App() {
   return (

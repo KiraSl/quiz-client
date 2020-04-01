@@ -3,7 +3,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter'
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import Form from 'react-bootstrap/form'
 
-class CodeBlock extends React.Component {
+class CodeBlockExample extends React.Component {
   constructor() {
     super(...arguments)
     this.state = {
@@ -43,4 +43,4 @@ class CodeBlock extends React.Component {
   }
 }
 
-export default CodeBlock
+export default CodeBlockExample
