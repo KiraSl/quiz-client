@@ -1,12 +1,17 @@
 import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import Index from './routes/Index'
+import Game from './routes/Game'
+import EndGame from './routes/EndGame'
 import './App.css'
-import CodeBlock from './components/CodeBlock.js'
 
 function App() {
   return (
-    <div className="App mt-3">
-      <CodeBlock />
-    </div>
+    <Router>
+      <Route exact path="/" component={Index} />
+      <Route exact path="/game" component={Game} />
+      <Route exact path="/end-game" component={EndGame} />
+    </Router>
   )
 }
 
