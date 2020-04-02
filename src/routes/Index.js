@@ -11,7 +11,7 @@ class Index extends React.Component {
     }
   }
 
-  selectCategory(event) {
+  selectCategory = (event) => {
     this.setState({
       selectedCategory: event.target.value,
     })
