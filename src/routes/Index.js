@@ -8,7 +8,14 @@ class Index extends React.Component {
 
     this.state = {
       selectedCategory: null,
+      categories: [],
     }
+  }
+
+  async componentDidMount() {
+    const categories = await fetch('http://localhost:3001/categories')
+      .then(res => res.json())
+    this.setState({ categories })
   }
 
   selectCategory = (event) => {
@@ -26,11 +33,7 @@ class Index extends React.Component {
             <Form.Label>Please select a category to start the game</Form.Label>
             <Form.Control as="select" onChange={this.selectCategory} defaultValue={'default'}>
               <option value="default" disabled>Select a category</option>
-              <option value="JavaScript">JavaScript</option>
-              <option value="Movies">Movies</option>
-              <option value="Music">Music </option>
-              <option value="Belgian History">Belgian History</option>
-              <option value="Things that annoy SS">Things that annoy SS</option>
+              {this.state.categories.map((category, index) => <option value={category.name} key={index}>{category.name}</option>)}
             </Form.Control>
           </Form.Group>
           <Link
