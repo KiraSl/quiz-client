@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Form, Container } from 'react-bootstrap'
 
@@ -7,20 +8,13 @@ class Index extends React.Component {
     super(props)
 
     this.state = {
-      selectedCategory: null,
-      categories: [],
+      selectedCategoryId: null,
     }
   }
 
-  async componentDidMount() {
-    const categories = await fetch('http://localhost:3001/categories')
-      .then(res => res.json())
-    this.setState({ categories })
-  }
-
-  selectCategory = (event) => {
+  selectCategory = event => {
     this.setState({
-      selectedCategory: event.target.value,
+      selectedCategoryId: event.target.value,
     })
   }
 
@@ -33,12 +27,12 @@ class Index extends React.Component {
             <Form.Label>Please select a category to start the game</Form.Label>
             <Form.Control as="select" onChange={this.selectCategory} defaultValue={'default'}>
               <option value="default" disabled>Select a category</option>
-              {this.state.categories.map((category, index) => <option value={category.name} key={index}>{category.name}</option>)}
+              {this.props.categories.map((category, index) => <option value={category.id} key={index}>{category.name}</option>)}
             </Form.Control>
           </Form.Group>
           <Link
-            className={`btn btn-primary ${this.state.selectedCategory ? '' : 'disabled'}`}
-            to={`/game?category=${this.state.selectedCategory}`}
+            className={`btn btn-primary ${this.state.selectedCategoryId ? '' : 'disabled'}`}
+            to={`/game/${this.state.selectedCategoryId}`}
           >
             Start
           </Link>
@@ -46,6 +40,10 @@ class Index extends React.Component {
       </Container>
     )
   }
+}
+
+Index.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.object),
 }
 
 export default Index
