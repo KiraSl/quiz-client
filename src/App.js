@@ -14,8 +14,8 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    const categories = await fetch('http://localhost:3001/categories')
-      .then(res => res.json())
+    const response = await fetch('http://localhost:3001/categories')
+    const categories = await response.json()
     this.setState({ categories })
   }
 
@@ -28,8 +28,8 @@ class App extends React.Component {
         <Route
           exact
           path="/game/:categoryId"
-          render={props => {
-            return <Game categories={this.state.categories} {...props} />
+          render={routerProps => {
+            return <Game categories={this.state.categories} {...routerProps} />
           }}
         />
         <Route exact path="/end-game" component={EndGame} />
