@@ -23,25 +23,44 @@ class Game extends React.Component {
     const { categoryId } = this.props.match.params
     const category = this.props.categories.find(category => category.id.toString() === categoryId)
     const question = this.state.questions[this.state.currentQuestionIndex]
+    const isLoading = !question || !category
 
-    // Next: create a component to render the question & create a "Next" button to move to the next question. 
+    // Next: create a component to render the question & create a "Next" button to move to the next question.
     return (
       <div className="d-flex align-items-center justify-content-center vh-100 flex-column">
-        {category && <h1>{category.name}</h1>}
-        {question ?
-          <>
-            <div>{this.state.currentQuestionIndex + 1} /{this.state.questions.length}</div>
-            <h3>{question.title}</h3>
-            <p>{question.description}</p>
-            {question.codeBlock &&
-              <SyntaxHighlighter language={question.codeType} style={dracula}>
-                {question.codeBlock}
-              </SyntaxHighlighter>
-            }
-          </> :
+        {isLoading ? (
           <h3>Loading...</h3>
-        }
-      </div >
+        ) : (
+          <div className="card">
+            <div className="card-header">
+              <h3 className="d-flex justify-content-between">
+                <span>{category.name}</span>
+                <span>
+                  {this.state.currentQuestionIndex + 1}/{this.state.questions.length}
+                </span>
+              </h3>
+            </div>
+            <div className="card-body">
+              <p>{question.description}</p>
+              {question.codeBlock && (
+                <SyntaxHighlighter language={question.codeType} style={dracula}>
+                  {question.codeBlock}
+                </SyntaxHighlighter>
+              )}
+            </div>
+            <div className="d-flex border-top">
+              <ul className="list-group list-group-flush w-100">
+                <li className="list-group-item bg-info"><button className="w-100 border-0 bg-transparent">Cras justo odio</button></li>
+                <li className="list-group-item bg-info"><button className="w-100 border-0 bg-transparent">Dapibus ac facilisis in</button></li>
+              </ul>
+              <ul className="list-group list-group-flush w-100 border-left">
+                <li className="list-group-item bg-info"><button className="w-100 border-0 bg-transparent">Cras justo odio</button></li>
+                <li className="list-group-item bg-info"><button className="w-100 border-0 bg-transparent">Dapibus ac facilisis in</button></li>
+              </ul>
+            </div>
+          </div>
+        )}
+      </div>
     )
   }
 }
@@ -50,6 +69,5 @@ Game.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.object),
   match: PropTypes.object,
 }
-
 
 export default Game
