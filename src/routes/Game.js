@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import SyntaxHighlighter from 'react-syntax-highlighter'
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs'
+import { Loading } from '../components/Loading'
+import { QuestionCard } from '../components/QuestionCard'
 
 class Game extends React.Component {
   constructor(props) {
@@ -11,6 +11,18 @@ class Game extends React.Component {
       questions: [],
       currentQuestionIndex: 0,
     }
+  }
+
+  decrementCurrentQuestionIndex = () => {
+    this.setState({
+      currentQuestionIndex: this.state.currentQuestionIndex - 1,
+    })
+  }
+
+  incrementCurrentQuestionIndex = () => {
+    this.setState({
+      currentQuestionIndex: this.state.currentQuestionIndex + 1,
+    })
   }
 
   async componentDidMount() {
@@ -24,42 +36,36 @@ class Game extends React.Component {
     const category = this.props.categories.find(category => category.id.toString() === categoryId)
     const question = this.state.questions[this.state.currentQuestionIndex]
     const isLoading = !question || !category
+    const isNextQuestionAvailable = this.state.currentQuestionIndex + 1 !== this.state.questions.length
 
-    // Next: create a component to render the question & create a "Next" button to move to the next question.
     return (
       <div className="d-flex align-items-center justify-content-center vh-100 flex-column">
-        {isLoading ? (
-          <h3>Loading...</h3>
-        ) : (
-          <div className="card">
-            <div className="card-header">
-              <h3 className="d-flex justify-content-between">
-                <span>{category.name}</span>
-                <span>
-                  {this.state.currentQuestionIndex + 1}/{this.state.questions.length}
-                </span>
-              </h3>
-            </div>
-            <div className="card-body">
-              <p>{question.description}</p>
-              {question.codeBlock && (
-                <SyntaxHighlighter language={question.codeType} style={dracula}>
-                  {question.codeBlock}
-                </SyntaxHighlighter>
-              )}
-            </div>
-            <div className="d-flex border-top">
-              <ul className="list-group list-group-flush w-100">
-                <li className="list-group-item bg-info"><button className="w-100 border-0 bg-transparent">Cras justo odio</button></li>
-                <li className="list-group-item bg-info"><button className="w-100 border-0 bg-transparent">Dapibus ac facilisis in</button></li>
-              </ul>
-              <ul className="list-group list-group-flush w-100 border-left">
-                <li className="list-group-item bg-info"><button className="w-100 border-0 bg-transparent">Cras justo odio</button></li>
-                <li className="list-group-item bg-info"><button className="w-100 border-0 bg-transparent">Dapibus ac facilisis in</button></li>
-              </ul>
-            </div>
-          </div>
-        )}
+        {isLoading ? <Loading /> :
+          <>
+            <QuestionCard
+              questionsLength={this.state.questions.length}
+              question={question}
+              category={category}
+              currentQuestionIndex={this.state.currentQuestionIndex + 1}
+            />
+            {!!this.state.currentQuestionIndex &&
+              <button
+                className="btn btn-primary mt-2"
+                onClick={this.decrementCurrentQuestionIndex}
+              >
+                Previous question
+              </button>
+            }
+            {isNextQuestionAvailable &&
+              <button
+                className="btn btn-primary mt-2"
+                onClick={this.incrementCurrentQuestionIndex}
+              >
+                Next question
+              </button>
+            }
+          </>
+        }
       </div>
     )
   }
